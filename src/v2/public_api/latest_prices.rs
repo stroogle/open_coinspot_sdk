@@ -3,19 +3,19 @@ use std::error::Error;
 use crate::v2::CoinSpotPublic;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Price {
-    bid: String,
-    ask: String,
-    last: String,
+    pub bid: String,
+    pub ask: String,
+    pub last: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct LatestPricesResponse {
-    status: String,
+    pub status: String,
     // At this stage, event though the API documentation states this is here on a successful request, it is not.
     // message: String,
-    prices: HashMap<String, Price>
+    pub prices: HashMap<String, Price>
 }
 
 impl CoinSpotPublic {

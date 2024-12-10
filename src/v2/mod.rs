@@ -7,12 +7,6 @@ use std::error::Error;
 use serde::{Deserialize, Serialize};
 
 /// CoinSpot's api documentation says that any bad response will fall into this format.
-/// ```
-/// CoinSpotBadResponse {
-///     staus: "error",
-///     message: "Coin not found"
-/// }
-/// ```
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CoinSpotBadResponse {
     pub status: String,

@@ -17,10 +17,9 @@ pub struct LatestCoinMarketPriceResponse {
 
 impl CoinSpotPublic {
 
-    /// Used to get the latest prices of a specific coin.
-    /// CoinSpot's API does not handle invalid coins, neither does this sdk.
-    /// This method will throw a serde_json parse error in the event of an invalid coin input. 
-    /// 
+    /// Used to get the latest prices of a specific coin, on a specific market.
+    /// CoinSpot's API also throws a 404 error for invalid markets, this 404 does not return the error response you might expect.
+    /// Therefore, neither does this sdk.
     pub async fn latest_coin_price_market(coin_symbol: &str, market: &str) -> CoinSpotResult<LatestCoinMarketPriceResponse>{
         let url = format!("https://www.coinspot.com.au/pubapi/v2/latest/{}/{}", coin_symbol, market);
         println!("{:?}", &url);

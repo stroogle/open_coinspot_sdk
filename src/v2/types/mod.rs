@@ -77,3 +77,10 @@ pub struct CompletedOrders {
     pub buyorders: Vec<CompleteOrder>,
     pub sellorders: Vec<CompleteOrder>
 }
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct CompletedOrdersSummary {
+    pub status: String,
+    pub message: String,
+    pub orders: Vec<CompleteOrder>
+}

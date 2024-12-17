@@ -6,7 +6,7 @@ use crate::v2::{
         CoinSpotBadResponse,
         CoinSpotResponse,
         CoinSpotResult,
-        CompletedOrders
+        CompletedOrdersSummary
     }
 };
 
@@ -15,8 +15,8 @@ impl CoinSpotPublic {
     /// Used to get the latest buy price of a specific coin.
     /// CoinSpot's API also throws a 400 error for invalid markets.
     /// This 400 error will return a CoinSpotResponse::Bad response
-    pub async fn completed_orders_coin_market(coin_symbol: &str, market: &str) -> CoinSpotResult<CompletedOrders>{
-        let url = format!("https://www.coinspot.com.au/pubapi/v2/orders/completed/{}/{}", coin_symbol, market);
+    pub async fn completed_orders_coin_summary(coin_symbol: &str) -> CoinSpotResult<CompletedOrdersSummary>{
+        let url = format!("https://www.coinspot.com.au/pubapi/v2/orders/summary/completed/{}", coin_symbol);
         println!("{:?}", &url);
         let res = reqwest::get(
             &url
@@ -26,7 +26,7 @@ impl CoinSpotPublic {
             StatusCode::OK => {
                 let text = res.text().await?;
                 println!("{:?}", &text);
-                let json: CompletedOrders = serde_json::from_str(&text)?;
+                let json: CompletedOrdersSummary = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Ok(json)
                 )
@@ -53,10 +53,10 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_completed_orders_coin_market() {
+    async fn test_completed_orders_coin_summary() {
     
-        let result: CoinSpotResponse<CompletedOrders>;
-        result = CoinSpotPublic::completed_orders_coin_market("btc", "usdt")
+        let result: CoinSpotResponse<CompletedOrdersSummary>;
+        result = CoinSpotPublic::completed_orders_coin_summary("btc")
         .await
         .unwrap();
 
@@ -64,15 +64,15 @@ mod tests {
             CoinSpotResponse::Ok(res) => {
                 assert_eq!(res.status, "ok");
                 assert_eq!(res.message, "ok");
-                assert_eq!(res.buyorders[0].coin, "BTC");
+                assert_eq!(res.orders[0].coin, "BTC");
             },
             _ => {}
         }    
     }
 
     #[tokio::test]
-    async fn test_completed_orders_fake_coin_market() {
-        let result2 = CoinSpotPublic::completed_orders_coin_market("sdfsdf", "usdt")
+    async fn test_completed_orders_fake_coin_summary() {
+        let result2 = CoinSpotPublic::completed_orders_coin_summary("sdfsdf")
         .await
         .unwrap();
 
@@ -80,21 +80,6 @@ mod tests {
             CoinSpotResponse::Bad(res) => {
                 assert_eq!(res.status, "error");
                 assert_eq!(res.message, "Coin not found");
-            },
-            _ => assert!(false)
-        }
-    }
-
-    #[tokio::test]
-    async fn test_completed_orders_fake_market() {
-        let result2 = CoinSpotPublic::completed_orders_coin_market("btc", "usdt123")
-        .await
-        .unwrap();
-
-        match result2 {
-            CoinSpotResponse::Bad(res) => {
-                assert_eq!(res.status, "error");
-                assert_eq!(res.message, "Invalid market");
             },
             _ => assert!(false)
         }

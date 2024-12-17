@@ -17,7 +17,7 @@ impl CoinSpotPublic {
     /// This 400 error will return a CoinSpotResponse::Bad response
     pub async fn latest_buy_price_market(coin_symbol: &str, market: &str) -> CoinSpotResult<LatestActionPrice>{
         let url = format!("https://www.coinspot.com.au/pubapi/v2/buyprice/{}/{}", coin_symbol, market);
-        println!("{:?}", &url);
+        
         let res = reqwest::get(
             &url
         ).await?;
@@ -25,7 +25,7 @@ impl CoinSpotPublic {
         match res.status() {
             StatusCode::OK => {
                 let text = res.text().await?;
-                println!("{:?}", &text);
+                
                 let json: LatestActionPrice = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Ok(json)
@@ -33,7 +33,7 @@ impl CoinSpotPublic {
             },
             StatusCode::BAD_REQUEST => {
                 let text = res.text().await?;
-                println!("{:?}", &text);
+                
                 let json: CoinSpotBadResponse = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Bad(json)

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::error::Error;
+use std::{collections::HashMap, error::Error};
 
 /// CoinSpot's api documentation says that any bad response will fall into this format.
 #[derive(Serialize, Deserialize, Debug)]
@@ -22,6 +22,12 @@ pub struct Price {
     pub bid: String,
     pub ask: String,
     pub last: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct LatestPrices {
+    pub status: String,
+    pub prices: HashMap<String, Price>
 }
 
 #[derive(Deserialize, Serialize, Debug)]

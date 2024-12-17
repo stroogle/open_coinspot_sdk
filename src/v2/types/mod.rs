@@ -18,6 +18,19 @@ pub enum CoinSpotResponse<T> {
 pub type CoinSpotResult<T> = Result<CoinSpotResponse<T>, Box<dyn Error>>;
 
 #[derive(Deserialize, Serialize, Debug)]
+pub struct Price {
+    pub bid: String,
+    pub ask: String,
+    pub last: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct LatestPrice {
+    pub status: String,
+    pub prices: Price
+}
+
+#[derive(Deserialize, Serialize, Debug)]
 pub struct LatestActionPrice {
     pub status: String,
     pub message: String,

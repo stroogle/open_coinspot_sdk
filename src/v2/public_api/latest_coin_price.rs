@@ -16,7 +16,7 @@ impl CoinSpotPublic {
     /// 
     pub async fn latest_coin_price(coin_symbol: &str) -> CoinSpotResult<LatestPrice>{
         let url = format!("https://www.coinspot.com.au/pubapi/v2/latest/{}", coin_symbol);
-        println!("{:?}", &url);
+        
         let res = reqwest::get(
             &url
         ).await?;
@@ -24,7 +24,7 @@ impl CoinSpotPublic {
         match res.status() {
             StatusCode::OK => {
                 let text = res.text().await?;
-                println!("{:?}", &text);
+                
                 let json: LatestPrice = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Ok(json)

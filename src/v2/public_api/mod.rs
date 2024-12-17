@@ -6,3 +6,4 @@ pub mod latest_buy_price_market;
 pub mod latest_sell_price;
 pub mod latest_sell_price_market;
 pub mod open_orders_coin;
+pub mod open_orders_coin_market;

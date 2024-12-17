@@ -60,3 +60,20 @@ pub struct OpenOrders {
     pub buyorders: Vec<Order>,
     pub sellorders: Vec<Order>
 }
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct CompleteOrder {
+    pub amount: f64,
+    pub rate: f64,
+    pub total: f64,
+    pub coin: String,
+    pub market: String,
+    pub solddate: String,
+}
+#[derive(Deserialize, Serialize, Debug)]
+pub struct CompletedOrders {
+    pub status: String,
+    pub message: String,
+    pub buyorders: Vec<CompleteOrder>,
+    pub sellorders: Vec<CompleteOrder>
+}

@@ -43,3 +43,20 @@ pub struct LatestActionPrice {
     pub rate: String,
     pub market: String
 }
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct Order {
+    pub amount: f64,
+    pub rate: f64,
+    pub total: f64,
+    pub coin: String,
+    pub market: String
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct OpenOrders {
+    pub status: String,
+    pub message: String,
+    pub buyorders: Vec<Order>,
+    pub sellorders: Vec<Order>
+}

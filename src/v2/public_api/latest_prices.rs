@@ -1,7 +1,14 @@
 use std::collections::HashMap;
-use crate::v2::{CoinSpotBadResponse, CoinSpotPublic, CoinSpotResponse, CoinSpotResult};
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
+use crate::v2::{
+    CoinSpotPublic,
+    types::{
+        CoinSpotBadResponse,
+        CoinSpotResponse,
+        CoinSpotResult,
+    }
+};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Price {

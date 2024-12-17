@@ -1,7 +1,13 @@
 use reqwest::StatusCode;
 use serde::{Deserialize, Serialize};
 
-use crate::v2::{CoinSpotPublic, CoinSpotResponse, CoinSpotResult};
+use crate::v2::{
+    CoinSpotPublic,
+    types::{
+        CoinSpotResponse,
+        CoinSpotResult,
+    }
+};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Prices {

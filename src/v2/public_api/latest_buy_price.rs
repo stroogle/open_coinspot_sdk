@@ -1,22 +1,21 @@
 use reqwest::StatusCode;
-use serde::{Deserialize, Serialize};
 
-use crate::v2::{CoinSpotBadResponse, CoinSpotPublic, CoinSpotResponse, CoinSpotResult};
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LatestBuyPrice {
-    pub status: String,
-    pub message: String,
-    pub rate: String,
-    pub market: String,
-}
+use crate::v2::{
+    CoinSpotPublic,
+    types::{
+        CoinSpotBadResponse,
+        CoinSpotResponse,
+        CoinSpotResult,
+        LatestActionPrice
+    }
+};
 
 impl CoinSpotPublic {
 
     /// Used to get the latest buy price of a specific coin.
     /// CoinSpot's API also throws a 400 error for invalid markets.
     /// This 400 error will return a CoinSpotResponse::Bad response
-    pub async fn latest_buy_price(coin_symbol: &str) -> CoinSpotResult<LatestBuyPrice>{
+    pub async fn latest_buy_price(coin_symbol: &str) -> CoinSpotResult<LatestActionPrice>{
         let url = format!("https://www.coinspot.com.au/pubapi/v2/buyprice/{}", coin_symbol);
         println!("{:?}", &url);
         let res = reqwest::get(
@@ -27,7 +26,7 @@ impl CoinSpotPublic {
             StatusCode::OK => {
                 let text = res.text().await?;
                 println!("{:?}", &text);
-                let json: LatestBuyPrice = serde_json::from_str(&text)?;
+                let json: LatestActionPrice = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Ok(json)
                 )

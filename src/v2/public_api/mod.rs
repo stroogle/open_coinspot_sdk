@@ -9,3 +9,4 @@ pub mod open_orders_coin;
 pub mod open_orders_coin_market;
 pub mod completed_orders_coin;
 pub mod completed_orders_coin_market;
+pub mod completed_orders_coin_summary;

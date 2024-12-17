@@ -6,7 +6,7 @@ use crate::v2::{
         CoinSpotBadResponse,
         CoinSpotResponse,
         CoinSpotResult,
-        OpenOrders
+        CompletedOrders
     }
 };
 
@@ -15,7 +15,7 @@ impl CoinSpotPublic {
     /// Used to get the latest buy price of a specific coin.
     /// CoinSpot's API also throws a 400 error for invalid markets.
     /// This 400 error will return a CoinSpotResponse::Bad response
-    pub async fn completed_orders_coin(coin_symbol: &str) -> CoinSpotResult<OpenOrders>{
+    pub async fn completed_orders_coin(coin_symbol: &str) -> CoinSpotResult<CompletedOrders>{
         let url = format!("https://www.coinspot.com.au/pubapi/v2/orders/completed/{}", coin_symbol);
         println!("{:?}", &url);
         let res = reqwest::get(
@@ -26,7 +26,7 @@ impl CoinSpotPublic {
             StatusCode::OK => {
                 let text = res.text().await?;
                 println!("{:?}", &text);
-                let json: OpenOrders = serde_json::from_str(&text)?;
+                let json: CompletedOrders = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Ok(json)
                 )
@@ -55,7 +55,7 @@ mod tests {
     #[tokio::test]
     async fn test_completed_orders_coin() {
     
-        let result: CoinSpotResponse<OpenOrders>;
+        let result: CoinSpotResponse<CompletedOrders>;
         result = CoinSpotPublic::completed_orders_coin("btc")
         .await
         .unwrap();

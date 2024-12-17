@@ -44,6 +44,7 @@ impl CoinSpotPublic {
 
 }
 
+#[cfg(test)]
 mod tests {
 
     use super::*;

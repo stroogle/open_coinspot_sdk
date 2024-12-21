@@ -17,9 +17,9 @@ pub enum CoinSpotResponse<T> {
 /// This is an alias of Rust's Result type, the generic passed in will map to the Ok type in CoinSpotResponse.
 pub type CoinSpotResult<T> = Result<CoinSpotResponse<T>, Box<dyn Error>>;
 
-pub enum Market {
-    Coin(&str),
-    TradePair(&str, &str)
+pub enum Market<'a> {
+    Coin(&'a str),
+    TradePair(&'a str, &'a str)
 }
 
 #[derive(Deserialize, Serialize, Debug)]

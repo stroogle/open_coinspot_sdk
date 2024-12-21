@@ -1,6 +1,6 @@
 use reqwest::StatusCode;
 use crate::v2::{
-    CoinSpotPublic,
+    PublicUtils,
     types::{
         CoinSpotBadResponse,
         CoinSpotResponse,
@@ -9,7 +9,7 @@ use crate::v2::{
     }
 };
 
-impl CoinSpotPublic {
+impl PublicUtils {
 
     /// <https://www.coinspot.com.au/v2/api#latestprices>
     /// 
@@ -44,7 +44,7 @@ mod tests {
     #[tokio::test]
     async fn test_latest_prices() {
     
-        let result: CoinSpotResponse<LatestPrices> = CoinSpotPublic::latest_prices().await.unwrap();
+        let result: CoinSpotResponse<LatestPrices> = PublicUtils::latest_prices().await.unwrap();
 
         match result {
             CoinSpotResponse::Ok(res) => {

@@ -1,7 +1,7 @@
 use reqwest::StatusCode;
 
 use crate::v2::{
-    CoinSpotPublic,
+    PublicUtils,
     types::{
         CoinSpotBadResponse,
         CoinSpotResponse,
@@ -10,7 +10,7 @@ use crate::v2::{
     }
 };
 
-impl CoinSpotPublic {
+impl PublicUtils {
 
     /// Used to get the latest buy price of a specific coin.
     /// CoinSpot's API also throws a 400 error for invalid markets.
@@ -56,7 +56,7 @@ mod tests {
     async fn test_latest_sell_price_market() {
     
         let result: CoinSpotResponse<LatestActionPrice>;
-        result = CoinSpotPublic::latest_sell_price_market("btc", "usdt")
+        result = PublicUtils::latest_sell_price_market("btc", "usdt")
         .await
         .unwrap();
 
@@ -71,7 +71,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_latest_sell_price_fake_coin_market() {
-        let result2 = CoinSpotPublic::latest_sell_price_market("sdfsdf", "usdt")
+        let result2 = PublicUtils::latest_sell_price_market("sdfsdf", "usdt")
         .await
         .unwrap();
 

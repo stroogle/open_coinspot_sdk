@@ -1,6 +1,6 @@
 use reqwest::StatusCode;
 use crate::v2::{
-    CoinSpotPublic,
+    PublicUtils,
     types::{
         CoinSpotResponse,
         CoinSpotResult,
@@ -8,7 +8,7 @@ use crate::v2::{
     }
 };
 
-impl CoinSpotPublic {
+impl PublicUtils {
 
     /// Used to get the latest prices of a specific coin, on a specific market.
     /// CoinSpot's API also throws a 404 error for invalid markets, this 404 does not return the error response you might expect.
@@ -45,7 +45,7 @@ mod tests {
     #[tokio::test]
     async fn test_latest_coin_market_price() {
     
-        let result = CoinSpotPublic::latest_coin_price_market("btc", "usdt").await.unwrap();
+        let result = PublicUtils::latest_coin_price_market("btc", "usdt").await.unwrap();
 
         match result {
             CoinSpotResponse::Ok(res) => {
@@ -58,7 +58,7 @@ mod tests {
     #[tokio::test]
     #[should_panic]
     async fn test_latest_coin_market_price_panic() {
-        let _result2 = CoinSpotPublic::latest_coin_price_market("xrp", "usdt")
+        let _result2 = PublicUtils::latest_coin_price_market("xrp", "usdt")
         .await
         .unwrap();
     }

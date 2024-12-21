@@ -10,4 +10,4 @@ pub mod types;
 
 /// The main entry point for the public API methods.
 /// All methods are static.
-pub struct CoinSpotPublic;
+pub struct PublicUtils;

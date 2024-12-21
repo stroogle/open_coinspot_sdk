@@ -1,6 +1,6 @@
 use reqwest::StatusCode;
 use crate::v2::{
-    CoinSpotPublic,
+    PublicUtils,
     types::{
         CoinSpotResponse,
         CoinSpotResult,
@@ -8,7 +8,7 @@ use crate::v2::{
     }
 };
 
-impl CoinSpotPublic {
+impl PublicUtils {
 
     /// Used to get the latest prices of a specific coin.
     /// CoinSpot's API does not handle invalid coins, neither does this sdk.
@@ -46,7 +46,7 @@ mod tests {
     #[tokio::test]
     async fn test_latest_coin_price() {
     
-        let result = CoinSpotPublic::latest_coin_price("xrp").await.unwrap();
+        let result = PublicUtils::latest_coin_price("xrp").await.unwrap();
 
         match result {
             CoinSpotResponse::Ok(res) => {

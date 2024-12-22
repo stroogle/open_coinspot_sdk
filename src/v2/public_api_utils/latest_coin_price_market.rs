@@ -25,12 +25,12 @@ impl PublicUtils {
                 let text = res.text().await?;
                 
                 let json: LatestPrice = serde_json::from_str(&text)?;
-                return Ok(
+                Ok(
                     CoinSpotResponse::Ok(json)
                 )
             },
             _ => {
-                return Err(format!("CoinSpot API never expects status: {:?}", res.status()).into())
+                Err(format!("CoinSpot API never expects status: {:?}", res.status()).into())
             }
         }
     }

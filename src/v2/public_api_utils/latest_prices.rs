@@ -20,17 +20,17 @@ impl PublicUtils {
         match res.status() {
             StatusCode::OK => {
                 let res_json: LatestPrices = serde_json::from_str(&res.text().await?)?;
-                return Ok(
+                Ok(
                     CoinSpotResponse::Ok(res_json)
                 )
             },
             StatusCode::BAD_REQUEST => {
                 let res_json: CoinSpotBadResponse = serde_json::from_str(&res.text().await?)?;
-                return Ok(
+                Ok(
                     CoinSpotResponse::Bad(res_json)
                 )
             },
-            _ => return Err(format!("Failed to consider the status {:?}", res.status()).into())
+            _ => Err(format!("Failed to consider the status {:?}", res.status()).into())
         }
     }
 

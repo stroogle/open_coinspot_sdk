@@ -3,21 +3,21 @@ use crate::v2::{
     PublicUtils,
     types::{
         CoinSpotResult,
-        LatestActionPrice,
+        OpenOrders,
         Market
     }
 };
 
 impl CoinSpotPublic {
 
-    pub async fn latest_sell_price(market: Market<'_>) -> CoinSpotResult<LatestActionPrice> {
+    pub async fn open_orders(market: Market<'_>) -> CoinSpotResult<OpenOrders> {
         match market {
             Market::Coin(coin_symbol) => {
-                PublicUtils::latest_sell_price(coin_symbol)
+                PublicUtils::open_orders_coin(coin_symbol)
                 .await
             },
             Market::TradePair(coin_symbol, market) => {
-                PublicUtils::latest_sell_price_market(coin_symbol, market)
+                PublicUtils::open_orders_coin_market(coin_symbol, market)
                 .await
             }
         }

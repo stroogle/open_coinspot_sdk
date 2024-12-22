@@ -1,22 +1,22 @@
 use reqwest::StatusCode;
 
 use crate::v2::{
-    CoinSpotPublic,
+    PublicUtils,
     types::{
         CoinSpotBadResponse,
         CoinSpotResponse,
         CoinSpotResult,
-        CompletedOrdersSummary
+        LatestActionPrice
     }
 };
 
-impl CoinSpotPublic {
+impl PublicUtils {
 
     /// Used to get the latest buy price of a specific coin.
     /// CoinSpot's API also throws a 400 error for invalid markets.
     /// This 400 error will return a CoinSpotResponse::Bad response
-    pub async fn completed_orders_coin_summary(coin_symbol: &str) -> CoinSpotResult<CompletedOrdersSummary>{
-        let url = format!("https://www.coinspot.com.au/pubapi/v2/orders/summary/completed/{}", coin_symbol);
+    pub async fn latest_buy_price(coin_symbol: &str) -> CoinSpotResult<LatestActionPrice>{
+        let url = format!("https://www.coinspot.com.au/pubapi/v2/buyprice/{}", coin_symbol);
         
         let res = reqwest::get(
             &url
@@ -26,7 +26,7 @@ impl CoinSpotPublic {
             StatusCode::OK => {
                 let text = res.text().await?;
                 
-                let json: CompletedOrdersSummary = serde_json::from_str(&text)?;
+                let json: LatestActionPrice = serde_json::from_str(&text)?;
                 return Ok(
                     CoinSpotResponse::Ok(json)
                 )
@@ -53,26 +53,22 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_completed_orders_coin_summary() {
+    async fn test_latest_buy_price() {
     
-        let result: CoinSpotResponse<CompletedOrdersSummary>;
-        result = CoinSpotPublic::completed_orders_coin_summary("btc")
-        .await
-        .unwrap();
+        let result = PublicUtils::latest_buy_price("btc").await.unwrap();
 
         match result {
             CoinSpotResponse::Ok(res) => {
                 assert_eq!(res.status, "ok");
                 assert_eq!(res.message, "ok");
-                assert_eq!(res.orders[0].coin, "BTC");
             },
             _ => {}
         }    
     }
 
     #[tokio::test]
-    async fn test_completed_orders_fake_coin_summary() {
-        let result2 = CoinSpotPublic::completed_orders_coin_summary("sdfsdf")
+    async fn test_latest_buy_price_fake_coin() {
+        let result2 = PublicUtils::latest_buy_price("sdfsdf")
         .await
         .unwrap();
 

@@ -1,7 +1,7 @@
 use reqwest::StatusCode;
 
 use crate::v2::{
-    CoinSpotPublic,
+    PublicUtils,
     types::{
         CoinSpotBadResponse,
         CoinSpotResponse,
@@ -10,13 +10,13 @@ use crate::v2::{
     }
 };
 
-impl CoinSpotPublic {
+impl PublicUtils {
 
     /// Used to get the latest buy price of a specific coin.
     /// CoinSpot's API also throws a 400 error for invalid markets.
     /// This 400 error will return a CoinSpotResponse::Bad response
-    pub async fn latest_buy_price_market(coin_symbol: &str, market: &str) -> CoinSpotResult<LatestActionPrice>{
-        let url = format!("https://www.coinspot.com.au/pubapi/v2/buyprice/{}/{}", coin_symbol, market);
+    pub async fn latest_sell_price(coin_symbol: &str) -> CoinSpotResult<LatestActionPrice>{
+        let url = format!("https://www.coinspot.com.au/pubapi/v2/sellprice/{}", coin_symbol);
         
         let res = reqwest::get(
             &url
@@ -53,12 +53,9 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_latest_buy_price_market() {
+    async fn test_latest_sell_price() {
     
-        let result: CoinSpotResponse<LatestActionPrice>;
-        result = CoinSpotPublic::latest_buy_price_market("btc", "usdt")
-        .await
-        .unwrap();
+        let result = PublicUtils::latest_sell_price("btc").await.unwrap();
 
         match result {
             CoinSpotResponse::Ok(res) => {
@@ -70,8 +67,8 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_latest_buy_price_fake_coin_market() {
-        let result2 = CoinSpotPublic::latest_buy_price_market("sdfsdf", "usdt")
+    async fn test_latest_sell_price_fake_coin() {
+        let result2 = PublicUtils::latest_sell_price("sdfsdf")
         .await
         .unwrap();
 

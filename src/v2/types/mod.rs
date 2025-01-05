@@ -89,3 +89,9 @@ pub struct CompletedOrdersSummary {
     pub message: String,
     pub orders: Vec<CompleteOrder>
 }
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct StatusCheckResponse {
+    pub status: String
+}
+
